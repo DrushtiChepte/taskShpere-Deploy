@@ -58,7 +58,7 @@ const initDb = async () => {
     await db.query(`INSERT INTO lists (type, user_id) VALUES
 ('personal', NULL),
 ('work', NULL),
-('completed', NULL));`);
+('completed', NULL);`);
 
     await db.query(`CREATE TABLE IF NOT EXISTS calendar_tasks (
     id SERIAL PRIMARY KEY,
