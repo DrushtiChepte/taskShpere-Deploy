@@ -32,6 +32,49 @@ const db = new pg.Client({
 db.connect();
 export default db;
 
+const initDb = async () => {
+  try {
+    // Create the users table if it doesn't exist
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(50) NOT NULL,
+        email VARCHAR(100) UNIQUE NOT NULL,
+        password TEXT NOT NULL
+      );
+    `);
+    await db.query(`CREATE TABLE tasks (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    list_id INTEGER REFERENCES lists(id),
+    task TEXT
+);`);
+    await db.query(`CREATE TABLE IF NOT EXISTS lists (
+    id SERIAL PRIMARY KEY,
+    type VARCHAR(255),
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+);`);
+    await db.query(`INSERT INTO lists (type, user_id) VALUES
+('personal', NULL),
+('work', NULL),
+('completed', NULL));`);
+
+    await db.query(`CREATE TABLE calendar_tasks (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    date DATE NOT NULL,
+    task TEXT NOT NULL
+);`);
+
+    console.log("Database initialized successfully!");
+  } catch (err) {
+    console.error("Error initializing database:", err);
+  }
+};
+
+// Call the function to initialize the database
+initDb();
+
 let lists = {
   personal: [],
   work: [],
