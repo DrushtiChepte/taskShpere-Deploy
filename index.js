@@ -43,23 +43,24 @@ const initDb = async () => {
         password TEXT NOT NULL
       );
     `);
-    await db.query(`CREATE TABLE tasks (
+    await db.query(`CREATE TABLE IF NOT EXISTS lists (
+      id SERIAL PRIMARY KEY,
+      type VARCHAR(255),
+      user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+  );`);
+    await db.query(`CREATE TABLE IF NOT EXISTS tasks (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     list_id INTEGER REFERENCES lists(id),
     task TEXT
 );`);
-    await db.query(`CREATE TABLE IF NOT EXISTS lists (
-    id SERIAL PRIMARY KEY,
-    type VARCHAR(255),
-    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
-);`);
+
     await db.query(`INSERT INTO lists (type, user_id) VALUES
 ('personal', NULL),
 ('work', NULL),
 ('completed', NULL));`);
 
-    await db.query(`CREATE TABLE calendar_tasks (
+    await db.query(`CREATE TABLE IF NOT EXISTS calendar_tasks (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     date DATE NOT NULL,
