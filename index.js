@@ -29,7 +29,6 @@ const db = new pg.Client({
   },
 });
 
-module.exports = pool;
 db.connect();
 export default db;
 
