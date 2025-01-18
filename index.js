@@ -58,7 +58,7 @@ const initDb = async () => {
     await db.query(`INSERT INTO lists (type, user_id) VALUES
 ('personal', NULL),
 ('work', NULL),
-('completed', NULL));`);
+('completed', NULL);`);
 
     await db.query(`CREATE TABLE IF NOT EXISTS calendar_tasks (
     id SERIAL PRIMARY KEY,
@@ -98,7 +98,6 @@ const months = [
 
 // Middleware to check if user is authenticated
 function isAuthenticated(req, res, next) {
-  req.session.username;
   req.session.email;
   if (req.session.userId) {
     return next();
@@ -117,7 +116,6 @@ app.post("/login", async (req, res) => {
       email,
     ]);
     const user = result.rows[0];
-    req.session.username = user.username;
     if (user) {
       if (await bcrypt.compare(password, user.password)) {
         req.session.userId = user.id;
