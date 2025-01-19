@@ -461,8 +461,8 @@ app.post("/:listType/complete", async (req, res) => {
     const taskId = result.rows[0].id;
 
     const completedListResult = await db.query(
-      "SELECT id FROM lists WHERE type = $1",
-      ["completed"]
+      "SELECT id FROM lists WHERE type = $1 AND user_id = $2 LIMIT 1",
+      ["completed", req.session.userId]
     );
     const completedListId = completedListResult.rows[0].id;
 
