@@ -1,36 +1,51 @@
 @media (max-width: 480px) {
+  * {
+    box-sizing: border-box;
+  }
   body {
     margin: 0;
     padding: 0;
     width: 100vw;
+    overflow-x: hidden;
   }
   .main-container {
     height: 100%;
-    width: 100%;
+    min-width: 100%;
     background-color: #000;
     margin: 0;
   }
   .navbar-container {
-    width: 100%;
     overflow: hidden;
-  }
-  .navbar-container {
     opacity: 1;
+    position: fixed;
+    z-index: 2;
+    width: 100%;
+  }
+  .navbar {
+    max-width: 100%;
+    padding-left: 0.5rem !important;
   }
   .nav-links {
-    display: none;
+    opacity: 0;
+  }
+  .navbar-logo {
+    padding-right: -50px;
   }
   .main-content {
-    width: auto;
+    top: 40px;
+    max-width: 95vw;
+    align-items: center;
+  }
+  .date {
+    margin: 1rem 1rem 1rem 1.5rem;
   }
   .head-section {
     position: relative;
+    padding: 0;
   }
-  .date {
-    margin: 0;
-  }
+
   .container {
-    top: 35px;
+    top: 25px;
   }
   .container .first-row {
     padding: 0;
@@ -39,15 +54,16 @@
   .work,
   .completed,
   .personal {
-    width: 350px;
+    width: 100%;
+    max-width: 350px;
   }
   .container .second-row {
     flex-direction: column;
-    margin-left: 12px;
+    align-items: center;
+    padding-left: 20px;
   }
   .calendar {
     width: 350px;
-    margin: 0;
     margin-bottom: 20px;
   }
   .more {
