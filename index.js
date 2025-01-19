@@ -449,7 +449,7 @@ app.post("/:listType/complete", async (req, res) => {
   const index = parseInt(req.body.index);
   try {
     const result = await db.query(
-      "SELECT id FROM tasks WHERE list_id = (SELECT id FROM lists WHERE type = $1) AND user_id = $2 ORDER BY id ASC LIMIT 1 OFFSET $3",
+      "SELECT id FROM tasks WHERE list_id = (SELECT id FROM lists WHERE type = $1 AND user_id = $2 LIMIT 1) AND user_id = $2 ORDER BY id ASC LIMIT 1 OFFSET $3",
       [listType, req.session.userId, index]
     );
 
