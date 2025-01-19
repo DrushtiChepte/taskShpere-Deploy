@@ -14,6 +14,9 @@
     width: 100%;
     overflow: hidden;
   }
+  .navbar-container {
+    opacity: 1;
+  }
   .nav-links {
     display: none;
   }
@@ -54,6 +57,9 @@
   }
   .box {
     margin-top: 10px;
+  }
+  .sidebar {
+    display: none;
   }
 }
 @media (max-width: 1000px) and (min-width: 500px) {
