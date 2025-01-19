@@ -119,6 +119,7 @@ app.post("/login", async (req, res) => {
     if (user) {
       if (await bcrypt.compare(password, user.password)) {
         req.session.userId = user.id;
+        console.log(req.session.userId);
 
         res.redirect("/");
       }
@@ -447,9 +448,12 @@ app.post("/:listType/delete", async (req, res) => {
 app.post("/:listType/complete", async (req, res) => {
   const listType = req.params.listType;
   const index = parseInt(req.body.index);
+  if (!req.session.userId) {
+    return res.status(401).send("User not authenticated");
+  }
   try {
     const result = await db.query(
-      "SELECT id FROM tasks WHERE list_id = (SELECT id FROM lists WHERE type = $1 AND user_id = $2 LIMIT 1) ORDER BY id ASC LIMIT 1 OFFSET $3",
+      "SELECT id FROM tasks WHERE list_id = (SELECT id FROM lists WHERE type = $1 LIMIT 1) AND user_id = $2  ORDER BY id ASC LIMIT 1 OFFSET $3",
       [listType, req.session.userId, index]
     );
 
@@ -461,8 +465,8 @@ app.post("/:listType/complete", async (req, res) => {
     const taskId = result.rows[0].id;
 
     const completedListResult = await db.query(
-      "SELECT id FROM lists WHERE type = $1 AND user_id = $2 LIMIT 1",
-      ["completed", req.session.userId]
+      "SELECT id FROM lists WHERE type = $1",
+      ["completed"]
     );
     const completedListId = completedListResult.rows[0].id;
 
